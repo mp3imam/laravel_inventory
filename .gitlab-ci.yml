@@ -1,0 +1,24 @@
+image: node:latest
+
+stages:
+  - deploy
+
+development:
+  stage: deploy
+  before_script:
+    - whoami
+    # Check for ssh-agent + rsync and install if not present
+    - "which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y  )"
+    - "which rsync || ( apt-get update -y && apt-get install rsync -y )"
+    - eval $(ssh-agent -s)
+    # Inject the remote's private key
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    # Append keyscan output into known hosts
+    - ssh-keyscan $SSH_IP_ADDRESS >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+  script:
+    - echo "==================== Deploying to development ===================="
+    - ssh $SSH_USER@$SSH_IP_ADDRESS "cd /www/apps/c2.cloudkejaksaan/frontend/ && git pull origin master"
+#sudo gitlab-runner register -n --url https://gitlab.hanatekindo.com/ --registration-token GR1348941YUFDac9NSZw8uxAXSvSi --executor docker --description "Deployment Runner" --docker-image "docker:stable" --tag-list deployment --docker-privileged

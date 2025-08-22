@@ -1,0 +1,13 @@
+c2_satker.test:
+  build:
+    context: ./docker/8.1
+    ports:
+      - 8000:8000
+    volumes:
+      - ./:/var/www/html
+    environment:
+      - APP_ENV=local
+      - APP_KEY=base64:1234567890
+      - DB_HOST=mysql
+      - DB_DATABASE=c2_satker
+      - DB_USERNAME=root
