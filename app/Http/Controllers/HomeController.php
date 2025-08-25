@@ -37,7 +37,7 @@ class HomeController extends Controller
 
     public function root()
     {
-        return redirect()->route('inventory');
+        return redirect('inventory');
     }
 
     /*Language Translation*/
