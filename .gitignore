@@ -7,9 +7,6 @@ yarn-error.log
 bootstrap/compiled.php
 app/storage/
 
-# Laravel 5 & Lumen specific
-/public/
-
 storage/*.key
 .env
 Homestead.yaml
